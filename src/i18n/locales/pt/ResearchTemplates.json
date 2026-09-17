@@ -1,0 +1,79 @@
+{
+  "title": "Modelo de pesquisa",
+  "description": "Escolha um formato de entregável reutilizável. Modelos definem padrões iniciais e nunca alteram permissões ou orçamento.",
+  "profileDescription": "Carregue um formato de entregável de Pesquisa reutilizável com este perfil.",
+  "profileInherit": "Nenhum modelo de perfil",
+  "workspaceDescription": "Defina o formato de entregável de Pesquisa padrão para este espaço de trabalho.",
+  "workspaceInherit": "Nenhum modelo de espaço de trabalho",
+  "inherit": "Herdar do espaço de trabalho ou perfil",
+  "disabled": "Sem modelo",
+  "loading": "Carregando modelos...",
+  "unavailable": "Modelos salvos indisponíveis. Modelos integrados permanecem disponíveis.",
+  "duplicate": "Duplicar modelo",
+  "remove": "Excluir modelo",
+  "builtIn": "Integrado",
+  "custom": "Personalizado",
+  "selectAria": "Modelo de pesquisa",
+  "profileSelectAria": "Modelo de pesquisa do perfil",
+  "workspaceSelectAria": "Modelo de pesquisa do espaço de trabalho",
+  "duplicateAria": "Duplicar modelo de pesquisa selecionado",
+  "removeAria": "Excluir modelo de pesquisa selecionado",
+  "revision": "Revisão {revision}",
+  "newTemplate": "Novo modelo",
+  "editTemplate": "Editar modelo",
+  "editAria": "Editar modelo de pesquisa selecionado",
+  "snapshot": "Instantâneo salvo",
+  "preview": "Prévia do modelo",
+  "deliverable": "Entregável",
+  "sections": "Seções obrigatórias",
+  "sources": "Prioridades de fontes",
+  "strategy": "Estratégia inicial",
+  "editor": {
+    "title": "Detalhes do modelo",
+    "name": "Nome",
+    "namePlaceholder": "ex.: Avaliação de produto",
+    "description": "Descrição",
+    "descriptionPlaceholder": "O que este modelo ajuda a entregar",
+    "deliverable": "Tipo de entregável",
+    "sections": "Seções obrigatórias",
+    "sectionsHint": "Uma seção por linha. Seções padrão de auditoria são adicionadas automaticamente.",
+    "sources": "Prioridades de fontes",
+    "sourceType": "Tipo de fonte",
+    "priority": "Prioridade",
+    "rationale": "Justificativa",
+    "rationalePlaceholder": "Por que esta fonte é útil",
+    "addSource": "Adicionar prioridade de fonte",
+    "strategy": "Estratégia inicial",
+    "cancel": "Cancelar",
+    "save": "Salvar modelo",
+    "required": "Preencha os campos obrigatórios antes de salvar.",
+    "removeSourceAria": "Remover prioridade de fonte"
+  },
+  "savePlan": {
+    "save": "Salvar como modelo",
+    "namePlaceholder": "Nome do modelo",
+    "descriptionPlaceholder": "Para que serve este plano",
+    "confirm": "Salvar modelo",
+    "cancel": "Cancelar",
+    "saved": "Modelo salvo",
+    "saveAria": "Salvar este plano de pesquisa como modelo"
+  },
+  "templates": {
+    "competitive-analysis": {
+      "name": "Análise competitiva",
+      "description": "Compare concorrentes com base em critérios explícitos e identifique lacunas e oportunidades significativas."
+    },
+    "literature-review": {
+      "name": "Revisão de literatura",
+      "description": "Sintetize pesquisas relevantes, pondere a qualidade das evidências e identifique questões não resolvidas."
+    },
+    "due-diligence": {
+      "name": "Due diligence",
+      "description": "Colete fatos verificáveis, evidencie incertezas e organize riscos materiais antes de uma tomada de decisão."
+    },
+    "technical-evaluation": {
+      "name": "Avaliação técnica",
+      "description": "Avalie opções técnicas considerando requisitos, custos operacionais e riscos de manutenção a longo prazo."
+    }
+  }
+}

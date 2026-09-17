@@ -10,6 +10,7 @@ describe("voice language helpers", () => {
     expect(getBrowserVoiceLanguage("en", "zh-TW")).toBe("en-US");
     expect(getBrowserVoiceLanguage("zh", "en-US")).toBe("zh-CN");
     expect(getBrowserVoiceLanguage("ja", "en-US")).toBe("ja-JP");
+    expect(getBrowserVoiceLanguage("pt", "en-US")).toBe("pt-BR");
     expect(getBrowserVoiceLanguage("auto", "ja-JP")).toBe("ja-JP");
   });
 
@@ -18,9 +19,14 @@ describe("voice language helpers", () => {
     expect(getProviderTranscriptionLanguage("en")).toBe("en");
     expect(getProviderTranscriptionLanguage("zh")).toBe("zh");
     expect(getProviderTranscriptionLanguage("ja")).toBe("ja");
+    expect(getProviderTranscriptionLanguage("pt")).toBe("pt");
   });
 
   it("builds a Japanese Gemini transcription prompt", () => {
     expect(getGeminiTranscriptionPrompt("ja")).toContain("Japanese");
+  });
+
+  it("builds a Portuguese Gemini transcription prompt", () => {
+    expect(getGeminiTranscriptionPrompt("pt")).toContain("Portuguese");
   });
 });

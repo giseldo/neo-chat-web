@@ -1,0 +1,13 @@
+{
+  "imageUnavailable": "Imagem indisponível",
+  "loadingImage": "Carregando imagem…",
+  "previewAlt": "Prévia",
+  "imagePreview": "Prévia da imagem",
+  "close": "Fechar prévia da imagem",
+  "previous": "Imagem anterior",
+  "next": "Próxima imagem",
+  "zoomOut": "Diminuir zoom",
+  "resetZoom": "Redefinir zoom",
+  "zoomIn": "Aumentar zoom",
+  "imageCounter": "Imagem {current} / {total}"
+}

@@ -1,0 +1,23 @@
+{
+  "editModel": "Editar Modelo",
+  "close": "Fechar editor de modelo",
+  "modelId": "ID do Modelo",
+  "modelName": "Nome do Modelo",
+  "capabilities": "Capacidades",
+  "saveChanges": "Salvar Alterações",
+  "toggleEnableAria": "Habilitar {label}",
+  "toggleDisableAria": "Desabilitar {label}",
+  "idCopied": "ID do modelo copiado",
+  "idCopyFailed": "Falha ao copiar ID do modelo",
+  "copyId": "Copiar ID do modelo",
+  "nameCopied": "Nome do modelo copiado",
+  "nameCopyFailed": "Falha ao copiar nome do modelo",
+  "copyName": "Copiar nome do modelo",
+  "closeSuggestions": "Fechar sugestões de nome de modelo",
+  "capAttachment": "Anexo",
+  "capVision": "Visão",
+  "capImageGeneration": "Geração de Imagem",
+  "capAudio": "Áudio",
+  "capReasoning": "Raciocínio",
+  "capToolCall": "Chamada de Ferramenta"
+}

@@ -15,12 +15,14 @@ describe("resolveLocale", () => {
     expect(resolveLocale("zh", "en-US,en;q=0.9")).toBe("zh");
     expect(resolveLocale("en", "zh-CN,zh;q=0.9")).toBe("en");
     expect(resolveLocale("ja", "en-US,en;q=0.9")).toBe("ja");
+    expect(resolveLocale("pt", "en-US,en;q=0.9")).toBe("pt");
   });
 
   it("falls back to Accept-Language when cookie is 'auto'", () => {
     expect(resolveLocale("auto", "zh-CN,zh;q=0.9,en;q=0.8")).toBe("zh");
     expect(resolveLocale("auto", "en-GB,en;q=0.9")).toBe("en");
     expect(resolveLocale("auto", "ja-JP,ja;q=0.9,en;q=0.8")).toBe("ja");
+    expect(resolveLocale("auto", "pt-BR,pt;q=0.9,en;q=0.8")).toBe("pt");
   });
 
   it("falls back to Accept-Language when cookie is missing", () => {

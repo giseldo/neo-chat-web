@@ -26,7 +26,7 @@ type ModelVoiceRuntime = Pick<
 type ModelVoiceResult<T> =
   { ok: true; value: T } | { ok: false; status: number; error: string };
 
-export type ModelVoiceLanguage = "auto" | "en" | "zh" | "ja" | undefined;
+export type ModelVoiceLanguage = "auto" | "en" | "zh" | "ja" | "pt" | undefined;
 
 function getAudioExtension(mimeType: string): string {
   if (mimeType.includes("mp4")) return "mp4";

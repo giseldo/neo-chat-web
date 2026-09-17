@@ -1,0 +1,9 @@
+{
+  "audioAttachmentNamed": "Anexo de áudio {fileName}",
+  "audioAttachment": "Anexo de áudio",
+  "playbackFailed": "Falha na reprodução do áudio. Tente novamente.",
+  "pause": "Pausar áudio",
+  "play": "Reproduzir áudio",
+  "seekNamed": "Buscar em {fileName}",
+  "seek": "Buscar no áudio"
+}

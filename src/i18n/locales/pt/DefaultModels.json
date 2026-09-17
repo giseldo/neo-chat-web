@@ -1,0 +1,17 @@
+{
+  "title": "Modelos Padrão",
+  "subtitle": "Configure os modelos de IA usados para tarefas em segundo plano e recursos automatizados.",
+  "defaultModelForAria": "Modelo padrão para {label}",
+  "conversationTitle": "Título da Conversa",
+  "conversationTitleDesc": "Usado para gerar um título conciso após a primeira troca de mensagens em um novo chat.",
+  "relatedQuestions": "Perguntas Relacionadas",
+  "relatedQuestionsDesc": "Usado para sugerir perguntas de acompanhamento após uma resposta da IA.",
+  "contextCompression": "Compressão de Contexto",
+  "contextCompressionDesc": "Usado para resumir conversas longas quando os limites de tokens são atingidos.",
+  "promptOptimization": "Aprimoramento de Texto",
+  "promptOptimizationDesc": "Use IA para melhorar o conteúdo do texto.",
+  "ragQuery": "Geração de Consulta RAG",
+  "ragQueryDesc": "Usado para gerar consultas de pesquisa otimizadas para a Base de Conhecimento.",
+  "memory": "Memória",
+  "memoryDesc": "Usado para extrair, consolidar e manter memórias locais de longo prazo."
+}

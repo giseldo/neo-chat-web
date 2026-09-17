@@ -1,0 +1,20 @@
+{
+  "pluginDeepResearchTitle": "Pesquisa Profunda (Deep Research)",
+  "pluginDeepResearchDescription": "Planeje e execute pesquisas delimitadas em várias fontes com evidências rastreáveis e aprovação antes do acesso à fonte.",
+  "pluginJinaTitle": "Leitor da Web (Jina AI)",
+  "pluginJinaDescription": "Converte qualquer URL em conteúdo markdown amigável para LLM. Útil para ler documentação, artigos ou qualquer contexto de página web.",
+  "pluginWeatherTitle": "Clima em Tempo Real",
+  "pluginWeatherDescription": "Obtenha informações meteorológicas em tempo real, incluindo temperatura, condições e umidade para qualquer cidade.",
+  "pluginUnsplashTitle": "Unsplash",
+  "pluginUnsplashDescription": "Pesquise fotos de alta qualidade no Unsplash.",
+  "pluginAgnesImageTitle": "Processamento de Imagem Agnes",
+  "pluginAgnesImageDescription": "Gere ou edite imagens com Agnes Image 2.1 Flash a partir de prompts de texto ou imagens de entrada.",
+  "pluginGeminiImageTitle": "Processamento de Imagem Gemini",
+  "pluginGeminiImageDescription": "Gere ou edite imagens com modelos de imagem Gemini Nano Banana.",
+  "pluginOpenAIImageTitle": "Processamento de Imagem compatível com OpenAI",
+  "pluginOpenAIImageDescription": "Gere ou edite imagens com provedores de API de imagens compatíveis com OpenAI.",
+  "pluginOpenAIResponsesImageTitle": "Processamento de Imagem OpenAI Responses",
+  "pluginOpenAIResponsesImageDescription": "Gere ou edite imagens com a ferramenta image_generation da API OpenAI Responses.",
+  "pluginAgnesVideoTitle": "Geração de Vídeo a partir de Texto/Imagem Agnes",
+  "pluginAgnesVideoDescription": "Crie tarefas de texto para vídeo ou imagem para vídeo com Agnes Video V2.0 e depois recupere os resultados gerados."
+}

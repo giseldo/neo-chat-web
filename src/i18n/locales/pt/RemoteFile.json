@@ -1,0 +1,18 @@
+{
+  "title": "Arquivo Remoto",
+  "close": "Fechar diálogo de arquivo remoto",
+  "fileTypeAria": "Tipo de arquivo remoto: {type}",
+  "typeMenuLabel": "Tipo de arquivo remoto",
+  "fileUrl": "URL do Arquivo",
+  "placeholderImage": "https://exemplo.com/imagem.png…",
+  "placeholderAudio": "https://exemplo.com/audio.mp3…",
+  "placeholderText": "https://exemplo.com/arquivo.txt…",
+  "typeText": "Texto",
+  "typeImage": "Imagem",
+  "typeAudio": "Áudio",
+  "warnNoExtension": "Não foi possível detectar a extensão do arquivo. Certifique-se de que o link aponte diretamente para um arquivo.",
+  "warnUnsupported": "O link não parece ser um arquivo {type} suportado. Pode falhar.",
+  "invalidUrl": "Formato de URL inválido.",
+  "cancel": "Cancelar",
+  "attach": "Anexar"
+}

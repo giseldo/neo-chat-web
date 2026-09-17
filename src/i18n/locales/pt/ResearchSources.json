@@ -1,0 +1,21 @@
+{
+  "arxivTitle": "arXiv",
+  "arxivDescription": "Pesquise preprints e leia resumos versionados e registros de publicação.",
+  "pubmedTitle": "PubMed",
+  "pubmedDescription": "Pesquise literatura biomédica e leia resumos e registros de publicação.",
+  "epo-opsTitle": "EPO OPS",
+  "epo-opsDescription": "Pesquise patentes mundiais e leia registros públicos e resumos disponíveis.",
+  "sec-edgarTitle": "SEC EDGAR",
+  "sec-edgarDescription": "Encontre registros de empresas por nome, ticker ou CIK e leia documentos oficiais primários.",
+  "clientId": "Client ID",
+  "clientSecret": "Client secret",
+  "epoCredentialsHelp": "Insira ambas as credenciais do seu aplicativo EPO OPS. Elas são armazenadas juntas como um segredo criptografado.",
+  "credentialsSaved": "Credenciais salvas. Habilite o plugin quando estiver pronto.",
+  "saveFailed": "Não foi possível salvar as credenciais. Tente novamente.",
+  "save": "Salvar credenciais",
+  "saving": "Salvando…",
+  "clear": "Limpar credenciais",
+  "secContact": "Organização e e-mail de contato",
+  "secContactPlaceholder": "Organização contato@exemplo.com",
+  "fixedEndpoints": "Usa endpoints oficiais fixos. Os resultados de busca são registros de descoberta; leia um documento para adicionar evidências."
+}

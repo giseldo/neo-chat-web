@@ -7,13 +7,19 @@ export function getBrowserVoiceLanguage(
   if (language === "en") return "en-US";
   if (language === "zh") return "zh-CN";
   if (language === "ja") return "ja-JP";
+  if (language === "pt") return "pt-BR";
   return fallbackLanguage || "en-US";
 }
 
 export function getProviderTranscriptionLanguage(
   language: VoiceLanguage | string | undefined,
-): "en" | "zh" | "ja" | undefined {
-  if (language === "en" || language === "zh" || language === "ja") {
+): "en" | "zh" | "ja" | "pt" | undefined {
+  if (
+    language === "en" ||
+    language === "zh" ||
+    language === "ja" ||
+    language === "pt"
+  ) {
     return language;
   }
   return undefined;
@@ -25,6 +31,9 @@ export function getGeminiTranscriptionPrompt(language?: VoiceLanguage): string {
   }
   if (language === "ja") {
     return "Transcribe the speech directly into Japanese text. Do not include any other text.";
+  }
+  if (language === "pt") {
+    return "Transcribe the speech directly into Brazilian Portuguese text. Do not include any other text.";
   }
   if (language === "en") {
     return "Transcribe the speech directly into English text. Do not include any other text.";

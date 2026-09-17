@@ -177,6 +177,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     en: t("langEnglish"),
     zh: t("langChinese"),
     ja: t("langJapanese"),
+    pt: t("langPortuguese"),
     auto: t("langSystem"),
   }[language];
 
@@ -1284,6 +1285,15 @@ const Sidebar: React.FC<SidebarProps> = ({
                       }
                     >
                       {t("langJapanese")}
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem
+                      indicatorPosition="right"
+                      value="pt"
+                      className={
+                        language === "pt" ? "font-medium text-brand" : undefined
+                      }
+                    >
+                      {t("langPortuguese")}
                     </DropdownMenuRadioItem>
                     <DropdownMenuRadioItem
                       indicatorPosition="right"

@@ -6,7 +6,7 @@ const DEFAULT_SITE_URL = "http://localhost:3000";
 const DESKTOP_SCREENSHOT_SRC = "/desktop.png" as const;
 const MOBILE_SCREENSHOT_SRC = "/mobile.png" as const;
 
-export type SeoLocale = "en" | "zh" | "ja";
+export type SeoLocale = "en" | "zh" | "ja" | "pt";
 
 type SeoContent = {
   title: string;
@@ -152,11 +152,42 @@ export const SEO_CONTENT: Record<SeoLocale, SeoContent> = {
       "Markdown、数式、コード、引用、編集可能な成果物",
     ],
   },
+  pt: {
+    title: `${PRODUCT_NAME} - Espaço de trabalho de chat de IA local-first`,
+    description: `${PRODUCT_NAME} é um espaço de trabalho de chat de IA local-first para conversas com múltiplos modelos, predefinições de assistentes, ferramentas de plugins, busca na web, RAG com base de conhecimento, voz e artefatos.`,
+    keywords: [
+      PRODUCT_NAME,
+      "chat de IA",
+      "IA local-first",
+      "chat multi-modelo",
+      "assistente de IA",
+      "RAG de base de conhecimento",
+      "busca na web",
+      "plugins de IA",
+      "entrada de voz",
+      "aplicativo de chat Next.js",
+    ],
+    ogTitle: `${PRODUCT_NAME} - Espaço de trabalho de chat de IA local-first`,
+    ogDescription:
+      "Converse com múltiplos provedores de IA, assistentes, plugins, busca na web, RAG com base de conhecimento, voz e artefatos em um único espaço de trabalho.",
+    ogImageAlt: `${PRODUCT_NAME} espaço de trabalho de chat de IA`,
+    openGraphLocale: "pt_BR",
+    structuredDataLanguage: "pt-BR",
+    features: [
+      "Conversas de IA com múltiplos modelos",
+      "Predefinições de assistente e assistentes personalizados",
+      "Ferramentas de plugin e busca na web",
+      "RAG com base de conhecimento",
+      "Entrada de voz e conversão de texto em fala",
+      "Markdown, fórmulas matemáticas, código, citações e artefatos",
+    ],
+  },
 };
 
 export function normalizeSeoLocale(locale: string | undefined): SeoLocale {
   if (locale === "zh") return "zh";
   if (locale === "ja") return "ja";
+  if (locale === "pt") return "pt";
   return "en";
 }
 

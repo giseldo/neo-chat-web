@@ -62,7 +62,7 @@ async function transcribeWithMimo(
   audioBlob: Blob,
   apiKey: string,
   modelId: string | undefined,
-  language: "auto" | "en" | "zh" | "ja" | undefined,
+  language: "auto" | "en" | "zh" | "ja" | "pt" | undefined,
 ) {
   const mimeType = getMimoAudioMimeType(audioBlob);
   const audioBase64 = await blobToBase64(audioBlob);

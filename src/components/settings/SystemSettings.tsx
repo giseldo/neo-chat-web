@@ -67,6 +67,7 @@ const INTERFACE_LANGUAGE_OPTIONS: Array<
   { value: "en", labelKey: "langEnglish" },
   { value: "zh", labelKey: "langChinese" },
   { value: "ja", labelKey: "langJapanese" },
+  { value: "pt", labelKey: "langPortuguese" },
   { value: "auto", labelKey: "langSystem" },
 ];
 

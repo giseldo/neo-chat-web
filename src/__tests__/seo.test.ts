@@ -47,6 +47,18 @@ describe("SEO screenshot assets", () => {
     });
   });
 
+  it("keeps Portuguese metadata and structured data in Portuguese", () => {
+    expect(seo.normalizeSeoLocale("pt")).toBe("pt");
+    expect(seo.getSeoContent("pt")).toMatchObject({
+      openGraphLocale: "pt_BR",
+      structuredDataLanguage: "pt-BR",
+    });
+    expect(seo.getSeoContent("pt").title).toContain("local-first");
+    expect(seo.buildWebApplicationJsonLd("pt")).toMatchObject({
+      inLanguage: "pt-BR",
+    });
+  });
+
   it("builds screenshot URLs from NEXT_PUBLIC_SITE_URL", () => {
     vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://chat.example.com/");
 

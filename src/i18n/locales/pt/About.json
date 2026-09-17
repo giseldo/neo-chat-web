@@ -1,0 +1,13 @@
+{
+  "title": "Sobre",
+  "client": "Cliente",
+  "clientValue": "Aplicação web",
+  "description": "O Neo Chat é um espaço de trabalho de chat de IA local-first e auto-hospedável para provedores de modelos, conversas, arquivos, conhecimento, plugins, assistentes, memória e configurações de execução.",
+  "productInfo": "Informações do Produto",
+  "website": "Site",
+  "officialRepo": "Repositório Oficial",
+  "version": "Versão",
+  "license": "Licença",
+  "copyright": "Direitos Autorais",
+  "licensedUnder": "Código licenciado sob {license}."
+}

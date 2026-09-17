@@ -17,6 +17,7 @@ const localeLoaders: Record<Locale, () => Promise<Record<string, unknown>>> = {
   en: async () => (await import("./locales/en")).default,
   zh: async () => (await import("./locales/zh")).default,
   ja: async () => (await import("./locales/ja")).default,
+  pt: async () => (await import("./locales/pt")).default,
 };
 
 /**

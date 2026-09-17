@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import en from "../i18n/locales/en";
 import ja from "../i18n/locales/ja";
+import pt from "../i18n/locales/pt";
 import zh from "../i18n/locales/zh";
 
 type Catalog = Record<string, unknown>;
@@ -18,6 +19,7 @@ function collectKeyPaths(value: unknown, prefix = ""): string[] {
 describe("message catalog parity", () => {
   const enKeys = collectKeyPaths(en).sort();
   const jaKeys = collectKeyPaths(ja).sort();
+  const ptKeys = collectKeyPaths(pt).sort();
   const zhKeys = collectKeyPaths(zh).sort();
 
   it("zh is missing no keys present in en", () => {
@@ -40,8 +42,19 @@ describe("message catalog parity", () => {
     expect(extraInJa).toEqual([]);
   });
 
+  it("pt is missing no keys present in en", () => {
+    const missingInPt = enKeys.filter((key) => !ptKeys.includes(key));
+    expect(missingInPt).toEqual([]);
+  });
+
+  it("pt has no extra keys absent from en", () => {
+    const extraInPt = ptKeys.filter((key) => !enKeys.includes(key));
+    expect(extraInPt).toEqual([]);
+  });
+
   it("all catalogs expose an identical key set", () => {
     expect(zhKeys).toEqual(enKeys);
     expect(jaKeys).toEqual(enKeys);
+    expect(ptKeys).toEqual(enKeys);
   });
 });

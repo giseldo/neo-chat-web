@@ -1,0 +1,32 @@
+{
+  "title": "Ajustar pesquisa",
+  "addQuestion": "Adicionar pergunta",
+  "loading": "Carregando controles de pesquisa…",
+  "hint": "As alterações são aplicadas após a rodada atual. A prioridade altera apenas a ordem na mesma profundidade.",
+  "unavailable": "Ajustes necessitam de uma fase de pesquisa ativa, armazenamento local durável e bloqueios de tarefas do navegador.",
+  "step": "Etapa do plano",
+  "question": "Pergunta de pesquisa",
+  "scopeHint": "Use o escopo e fontes aprovados. Orçamentos existentes ainda se aplicam.",
+  "cancel": "Cancelar",
+  "saving": "Salvando…",
+  "submit": "Colocar pergunta na fila",
+  "history": "Ajustes recentes",
+  "promote": "Priorizar nesta profundidade",
+  "demote": "Adiar nesta profundidade",
+  "reset": "Redefinir prioridade",
+  "priority": "Prioridade do nó",
+  "pending": "Aguardando próximo ponto seguro",
+  "applied": "Aplicado",
+  "frontier": "Perguntas de pesquisa pendentes",
+  "errors": {
+    "unavailable": "Não foi possível salvar os ajustes de pesquisa. Verifique a disponibilidade do armazenamento local e tente novamente.",
+    "closed": "Esta execução saiu da fase de exploração. O ajuste não foi aplicado.",
+    "invalid_step": "Selecione uma etapa do plano existente.",
+    "invalid_question": "Digite uma pergunta de até 4.000 caracteres.",
+    "duplicate": "Esta pergunta já está na fronteira ou no histórico de pesquisa.",
+    "node_limit": "O limite de nós de pesquisa foi atingido.",
+    "command_limit": "O limite de ajustes para esta execução foi atingido.",
+    "node_scheduled": "Este nó já foi agendado; sua prioridade não pode ser alterada.",
+    "missing_node": "Este nó não está mais na execução."
+  }
+}
