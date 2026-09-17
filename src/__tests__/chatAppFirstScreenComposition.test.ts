@@ -37,7 +37,7 @@ describe("ChatApp first screen composition", () => {
     expect(chatSurface).not.toContain('t("productSlogan")');
     expect(chatSurface).toContain("neoChatWordmark");
     expect(chatSurface).toContain(
-      "bg-[linear-gradient(to_right,#00DEB9,#03B2DE,#1D88E1)]",
+      "bg-[linear-gradient(to_right,#2563EB,#38BDF8,#2563EB)]",
     );
     expect(chatSurface).not.toContain("emptyChatSurface flex-1 flex flex-col");
     expect(chatSurface).toContain("bottom-[40vh]");

@@ -1021,7 +1021,7 @@ const ChatAppShell = ({
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center md:h-11 md:w-11">
                           <Logo className="h-10 w-10 md:h-11 md:w-11" />
                         </div>
-                        <h1 className="neoChatWordmark bg-clip-text text-[1.75rem] font-bold leading-none tracking-[0.01em] text-transparent bg-[linear-gradient(to_right,#00DEB9,#03B2DE,#1D88E1)]">
+                        <h1 className="neoChatWordmark bg-clip-text text-[1.75rem] font-bold leading-none tracking-[0.01em] text-transparent bg-[linear-gradient(to_right,#2563EB,#38BDF8,#2563EB)]">
                           {t("productName")}
                         </h1>
                       </div>

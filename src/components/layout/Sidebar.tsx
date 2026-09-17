@@ -669,13 +669,13 @@ const Sidebar: React.FC<SidebarProps> = ({
                 variant="bare"
                 type="button"
                 aria-label={t("goHomeAria")}
-                className="flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 text-lg font-bold text-gray-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 dark:text-foreground"
+                className="group flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 text-lg font-bold text-gray-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 dark:text-foreground"
                 onClick={onLogoClick}
               >
                 <div className="w-8 h-8 flex items-center justify-center shrink-0">
-                  <Logo className="w-7 h-7" />
+                  <Logo className="w-7 h-7 group-hover:scale-105 transition-transform duration-300" />
                 </div>
-                <span className="truncate bg-clip-text text-transparent bg-[linear-gradient(to_right,#00DEB9,#03B2DE,#1D88E1)] animate-in fade-in duration-300 whitespace-nowrap">
+                <span className="truncate bg-clip-text text-transparent bg-[linear-gradient(to_right,#2563EB,#38BDF8,#2563EB)] font-bold tracking-tight animate-in fade-in duration-300 whitespace-nowrap">
                   {PRODUCT_NAME}
                 </span>
               </Button>
