@@ -1,8 +1,11 @@
-import type { ProviderType } from "@/types";
+import type { ModelProvider, ProviderType } from "@/types";
 import {
   ANTHROPIC_PROVIDER_TYPE,
   GOOGLE_PROVIDER_TYPE,
   OPENAI_COMPATIBLE_PROVIDER_TYPE,
+  OPENAI_PROVIDER_TYPE,
+  isAnthropicProviderType,
+  isGoogleProviderType,
 } from "./providerTypes";
 
 export interface ProviderPreset {
@@ -142,3 +145,139 @@ export const PROVIDER_PRESETS: ProviderPreset[] = [
     directCall: true,
   },
 ];
+
+const KNOWN_PROVIDER_DOMAINS: Array<{ domain: string; keyUrl: string }> = [
+  { domain: "openai.com", keyUrl: "https://platform.openai.com/api-keys" },
+  {
+    domain: "anthropic.com",
+    keyUrl: "https://console.anthropic.com/settings/keys",
+  },
+  {
+    domain: "generativelanguage.googleapis.com",
+    keyUrl: "https://aistudio.google.com/app/apikey",
+  },
+  {
+    domain: "aistudio.google.com",
+    keyUrl: "https://aistudio.google.com/app/apikey",
+  },
+  { domain: "groq.com", keyUrl: "https://console.groq.com/keys" },
+  { domain: "x.ai", keyUrl: "https://console.x.ai/" },
+  { domain: "deepseek.com", keyUrl: "https://platform.deepseek.com/api_keys" },
+  { domain: "mistral.ai", keyUrl: "https://console.mistral.ai/api-keys/" },
+  {
+    domain: "perplexity.ai",
+    keyUrl: "https://www.perplexity.ai/settings/api",
+  },
+  { domain: "openrouter.ai", keyUrl: "https://openrouter.ai/keys" },
+  {
+    domain: "together.xyz",
+    keyUrl: "https://api.together.xyz/settings/api-keys",
+  },
+  {
+    domain: "together.ai",
+    keyUrl: "https://api.together.xyz/settings/api-keys",
+  },
+  { domain: "fireworks.ai", keyUrl: "https://fireworks.ai/api-keys" },
+  { domain: "cerebras.ai", keyUrl: "https://cloud.cerebras.ai/" },
+  { domain: "sambanova.ai", keyUrl: "https://cloud.sambanova.ai/" },
+  { domain: "deepinfra.com", keyUrl: "https://deepinfra.com/dash/api_keys" },
+  { domain: "cohere.ai", keyUrl: "https://dashboard.cohere.com/api-keys" },
+  { domain: "cohere.com", keyUrl: "https://dashboard.cohere.com/api-keys" },
+  {
+    domain: "siliconflow.cn",
+    keyUrl: "https://cloud.siliconflow.cn/account/ak",
+  },
+  {
+    domain: "moonshot.cn",
+    keyUrl: "https://platform.moonshot.cn/console/api-keys",
+  },
+  {
+    domain: "bigmodel.cn",
+    keyUrl: "https://open.bigmodel.cn/usercenter/apikeys",
+  },
+  { domain: "aliyun.com", keyUrl: "https://bailian.console.aliyun.com/" },
+  {
+    domain: "minimaxi.com",
+    keyUrl:
+      "https://platform.minimaxi.com/user-center/basic-information/interface-key",
+  },
+  { domain: "novita.ai", keyUrl: "https://novita.ai/settings/key-management" },
+  { domain: "ai21.com", keyUrl: "https://studio.ai21.com/account/api-key" },
+  { domain: "upstage.ai", keyUrl: "https://console.upstage.ai/api-keys" },
+];
+
+export function getProviderApiKeyHelpUrl(
+  provider?: Partial<ModelProvider> | ProviderType | null,
+): string | undefined {
+  if (!provider) return undefined;
+  if (typeof provider === "string") {
+    return getProviderApiKeyHelpUrl({ type: provider });
+  }
+
+  const directKeyUrl =
+    typeof provider.keyUrl === "string" ? provider.keyUrl.trim() : "";
+  if (directKeyUrl) return directKeyUrl;
+
+  const id = provider.id?.trim().toLowerCase();
+  const name = provider.name?.trim().toLowerCase();
+  const baseUrl = provider.baseUrl?.trim().toLowerCase();
+
+  if (id) {
+    const presetById = PROVIDER_PRESETS.find(
+      (preset) => preset.id.toLowerCase() === id,
+    );
+    if (presetById?.keyUrl) return presetById.keyUrl;
+  }
+
+  if (name) {
+    const presetByName = PROVIDER_PRESETS.find(
+      (preset) => preset.name.toLowerCase() === name,
+    );
+    if (presetByName?.keyUrl) return presetByName.keyUrl;
+  }
+
+  if (baseUrl) {
+    try {
+      const url = new URL(
+        baseUrl.startsWith("http://") || baseUrl.startsWith("https://")
+          ? baseUrl
+          : `https://${baseUrl}`,
+      );
+      const host = url.hostname.toLowerCase();
+
+      const presetByBaseUrl = PROVIDER_PRESETS.find((preset) => {
+        if (!preset.baseUrl) return false;
+        try {
+          const presetHost = new URL(preset.baseUrl).hostname.toLowerCase();
+          return (
+            host === presetHost ||
+            host.endsWith("." + presetHost) ||
+            presetHost.endsWith("." + host)
+          );
+        } catch {
+          return false;
+        }
+      });
+      if (presetByBaseUrl?.keyUrl) return presetByBaseUrl.keyUrl;
+
+      const matchedDomain = KNOWN_PROVIDER_DOMAINS.find(
+        (entry) => host === entry.domain || host.endsWith("." + entry.domain),
+      );
+      if (matchedDomain) return matchedDomain.keyUrl;
+    } catch {
+      // Ignore URL parse errors
+    }
+  }
+
+  if (isGoogleProviderType(provider.type)) {
+    return "https://aistudio.google.com/app/apikey";
+  }
+  if (isAnthropicProviderType(provider.type)) {
+    return "https://console.anthropic.com/settings/keys";
+  }
+  if (provider.type === OPENAI_PROVIDER_TYPE) {
+    return "https://platform.openai.com/api-keys";
+  }
+
+  return undefined;
+}

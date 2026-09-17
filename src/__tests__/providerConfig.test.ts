@@ -184,4 +184,24 @@ describe("provider config normalization", () => {
     expect(normalized[0]?.models).toHaveLength(PROVIDER_MODEL_LIMITS.maxModels);
     expect(normalized[1]?.id).toBe("P1");
   });
+
+  it("preserves provider keyUrl during normalization and validation", () => {
+    const provider = normalizeModelProvider({
+      id: "MISTRAL",
+      type: "OpenAI Compatible",
+      keyUrl: "https://console.mistral.ai/api-keys/",
+    });
+
+    expect(provider?.keyUrl).toBe("https://console.mistral.ai/api-keys/");
+
+    const restored = validateRestorableModelProviders([
+      {
+        id: "MISTRAL",
+        type: "OpenAI Compatible",
+        keyUrl: "https://console.mistral.ai/api-keys/",
+      },
+    ]);
+
+    expect(restored[0]?.keyUrl).toBe("https://console.mistral.ai/api-keys/");
+  });
 });

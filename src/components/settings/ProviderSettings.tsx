@@ -59,7 +59,11 @@ import {
   isAnthropicProviderType,
   isGoogleProviderType,
 } from "@/lib/providers/providerTypes";
-import { PROVIDER_PRESETS, type ProviderPreset } from "@/lib/providers/presets";
+import {
+  PROVIDER_PRESETS,
+  type ProviderPreset,
+  getProviderApiKeyHelpUrl,
+} from "@/lib/providers/presets";
 import {
   encryptLocalSecret,
   LOCAL_SECRET_CONTEXTS,
@@ -106,19 +110,6 @@ type ProviderTypeOption = {
   endpointPath: string;
   endpointClassName: string;
 };
-
-function getProviderApiKeyHelpUrl(type: ProviderType | undefined) {
-  if (isGoogleProviderType(type)) {
-    return "https://aistudio.google.com/app/apikey";
-  }
-  if (isAnthropicProviderType(type)) {
-    return "https://console.anthropic.com/settings/keys";
-  }
-  if (type === OPENAI_PROVIDER_TYPE) {
-    return "https://platform.openai.com/api-keys";
-  }
-  return undefined;
-}
 
 function renderProviderTypeOption(option: ProviderTypeOption) {
   return (
@@ -232,7 +223,7 @@ const ProviderSettings = () => {
   const showDirectCallInsecureWarning =
     Boolean(currentProvider?.directCall) &&
     currentProviderBaseUrl.trim().toLowerCase().startsWith("http://");
-  const providerApiKeyHelpUrl = getProviderApiKeyHelpUrl(currentProvider?.type);
+  const providerApiKeyHelpUrl = getProviderApiKeyHelpUrl(currentProvider);
   const providerBaseUrlPreview = currentProvider
     ? getProviderBaseUrlPreview(currentProviderBaseUrl, currentProvider.type)
     : null;
@@ -449,6 +440,7 @@ const ProviderSettings = () => {
       name: preset.name,
       type: preset.type,
       baseUrl: preset.baseUrl,
+      keyUrl: preset.keyUrl,
       directCall: preset.directCall ?? false,
     });
     setSelectedProviderId(newId);

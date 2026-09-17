@@ -7,7 +7,7 @@
   "baseUrl": "URL Base",
   "enterApiKey": "Digite a chave de API…",
   "apiBaseUrlPlaceholder": "https://api.exemplo.com…",
-  "getKey": "Obter Chave",
+  "getKey": "Obter chave",
   "expandSettings": "Expandir configurações de {name}",
   "collapseSettings": "Recolher configurações de {name}",
   "saveSecret": "Salvar segredo",

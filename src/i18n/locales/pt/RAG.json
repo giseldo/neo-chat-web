@@ -13,7 +13,7 @@
   "mineruTokenPlaceholder": "Token Mineru opcional…",
   "mineruHelp": "O Mineru analisa documentos sem um token por padrão. Adicione um token para a API de análise precisa.",
   "llamaParseApiKey": "Chave de API LlamaParse",
-  "getKey": "Obter Chave",
+  "getKey": "Obter chave",
   "llamaParseKeyPlaceholder": "llx-…",
   "llamaParseHelp": "Recupera markdown e tabelas de alta qualidade de documentos complexos como PDFs.",
   "documentChunking": "Fragmentação de Documentos",

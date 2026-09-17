@@ -2,7 +2,7 @@
   "title": "Serviços de Voz",
   "providerDefault": "Padrão",
   "elevenLabsApiKey": "Chave de API ElevenLabs (Opcional)",
-  "getKey": "Obter Chave",
+  "getKey": "Obter chave",
   "elevenLabsKeyPlaceholder": "sk_…",
   "sttTitle": "Reconhecimento de Fala (STT)",
   "autoTranscribe": "Transcrição Automática",

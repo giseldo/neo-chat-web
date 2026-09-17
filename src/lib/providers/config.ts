@@ -103,6 +103,7 @@ export function normalizeModelProvider(
   const type = normalizeProviderType(raw.type || fallback?.type);
   const models = normalizeModelList(raw.models);
   const modelsList = normalizeModelList(raw.modelsList || raw.models);
+  const keyUrl = trimString(raw.keyUrl, 1000);
 
   return {
     id,
@@ -121,6 +122,7 @@ export function normalizeModelProvider(
       (model) => modelsList.length === 0 || modelsList.includes(model),
     ),
     modelsList,
+    ...(keyUrl ? { keyUrl } : {}),
     ...(raw.isServerDefault ? { isServerDefault: true } : {}),
     ...(typeof raw.directCall === "boolean"
       ? { directCall: raw.directCall }
@@ -192,6 +194,12 @@ export function validateRestorableModelProviders(
       throw new Error(
         "The backup contains an invalid provider direct-call flag.",
       );
+    }
+    if (raw.keyUrl !== undefined && typeof raw.keyUrl !== "string") {
+      throw new Error("The backup contains an invalid provider key URL.");
+    }
+    if (typeof raw.keyUrl === "string" && raw.keyUrl.trim().length > 1000) {
+      throw new Error("The backup contains an invalid provider key URL.");
     }
     if (
       raw.isServerDefault !== undefined &&

@@ -29,7 +29,7 @@
   "preview": "Prévia:",
   "invalidBaseUrl": "Digite uma URL completa e válida.",
   "apiKey": "Chave de API",
-  "getKey": "Obter Chave",
+  "getKey": "Obter chave",
   "apiKeyPlaceholder": "sk-…",
   "keyStoredLocally": "Sua chave é criptografada localmente neste navegador.",
   "serverDefaultProviderDesc": "A configuração base deste provedor vem do servidor. Você também pode salvar uma chave neste navegador como um provedor comum.",
