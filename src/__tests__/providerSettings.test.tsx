@@ -374,4 +374,60 @@ describe("ProviderSettings", () => {
       screen.queryByRole("searchbox", { name: "modelSearchLabel" }),
     ).toBeNull();
   });
+
+  it("opens a preset picker and pre-fills a known provider on selection", async () => {
+    mocks.coreState.providers = [provider("FIRST")];
+    mocks.coreState.addProvider.mockReturnValue("NEW_ID");
+
+    render(<ProviderSettings />);
+
+    fireEvent.click(screen.getByRole("button", { name: /^add$/ }));
+
+    expect(await screen.findByText("addProviderDialogTitle")).toBeTruthy();
+
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: 'addProviderAria:{"name":"Groq"}',
+      }),
+    );
+
+    expect(mocks.coreState.addProvider).toHaveBeenCalledOnce();
+    expect(mocks.coreState.updateProvider).toHaveBeenCalledWith("NEW_ID", {
+      name: "Groq",
+      type: "OpenAI Compatible",
+      baseUrl: "https://api.groq.com/openai",
+      directCall: false,
+    });
+    expect(screen.queryByText("addProviderDialogTitle")).toBeNull();
+  });
+
+  it("filters presets by search and falls back to a custom provider", async () => {
+    mocks.coreState.providers = [provider("FIRST")];
+    mocks.coreState.addProvider.mockReturnValue("CUSTOM_ID");
+
+    render(<ProviderSettings />);
+
+    fireEvent.click(screen.getByRole("button", { name: /^add$/ }));
+    const search = await screen.findByPlaceholderText(
+      "searchProvidersPlaceholder",
+    );
+    fireEvent.change(search, { target: { value: "groq" } });
+
+    expect(
+      screen.queryByRole("button", {
+        name: 'addProviderAria:{"name":"OpenAI"}',
+      }),
+    ).toBeNull();
+    expect(
+      screen.getByRole("button", { name: 'addProviderAria:{"name":"Groq"}' }),
+    ).toBeTruthy();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "customProvider" }),
+    );
+
+    expect(mocks.coreState.addProvider).toHaveBeenCalledOnce();
+    expect(mocks.coreState.updateProvider).not.toHaveBeenCalled();
+    expect(screen.queryByText("addProviderDialogTitle")).toBeNull();
+  });
 });

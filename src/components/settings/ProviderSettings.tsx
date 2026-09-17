@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useId } from "react";
+import { createPortal } from "react-dom";
 import {
   Server,
   Trash2,
@@ -17,6 +18,17 @@ import {
   ExternalLink,
   Search,
   X,
+  Sparkles,
+  Brain,
+  Zap,
+  Bot,
+  Wind,
+  Globe,
+  Cloud,
+  Cpu,
+  Flame,
+  HardDrive,
+  type LucideIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ProviderType } from "@/types";
@@ -47,6 +59,7 @@ import {
   isAnthropicProviderType,
   isGoogleProviderType,
 } from "@/lib/providers/providerTypes";
+import { PROVIDER_PRESETS, type ProviderPreset } from "@/lib/providers/presets";
 import {
   encryptLocalSecret,
   LOCAL_SECRET_CONTEXTS,
@@ -58,10 +71,34 @@ import {
 } from "@/lib/utils/model";
 import { Button } from "@/components/ui/primitives";
 import {
+  trapModalFocus,
+  useModalLifecycle,
+} from "@/components/ui/useModalLifecycle";
+import {
   describeDirectCallError,
   fetchDirectProviderModels,
   shouldUseDirectCall,
 } from "@/services/api/chat/transport";
+
+const PROVIDER_PRESET_ICONS: Record<string, LucideIcon> = {
+  openai: Sparkles,
+  anthropic: Brain,
+  google: Sparkles,
+  groq: Zap,
+  xai: Bot,
+  deepseek: Brain,
+  mistral: Wind,
+  perplexity: Globe,
+  openrouter: Globe,
+  together: Cloud,
+  fireworks: Flame,
+  cerebras: Zap,
+  sambanova: Cpu,
+  deepinfra: Server,
+  cohere: Sparkles,
+  ollama: HardDrive,
+  lmstudio: Cpu,
+};
 
 type ProviderTypeOption = {
   value: ProviderType;
@@ -146,12 +183,17 @@ const ProviderSettings = () => {
   const [deleteConfirmProviderId, setDeleteConfirmProviderId] = useState<
     string | null
   >(null);
+  const [showAddProviderPicker, setShowAddProviderPicker] = useState(false);
+  const [presetSearchQuery, setPresetSearchQuery] = useState("");
   const fetchAbortRef = useRef<AbortController | null>(null);
   const fetchRequestIdRef = useRef(0);
   const selectedProviderIdRef = useRef<string | null>(null);
   const deleteConfirmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
+  const addProviderDialogRef = useRef<HTMLDivElement>(null);
+  const presetSearchInputRef = useRef<HTMLInputElement>(null);
+  const addProviderDialogTitleId = useId();
 
   const firstProviderId = providers[0]?.id ?? null;
   const selectedProviderExists = selectedProviderId
@@ -273,6 +315,12 @@ const ProviderSettings = () => {
     };
   }, []);
 
+  useModalLifecycle({
+    open: showAddProviderPicker,
+    dialogRef: addProviderDialogRef,
+    initialFocusRef: presetSearchInputRef,
+  });
+
   const handleDeleteProvider = () => {
     if (!currentProvider || providers.length <= 1) return;
 
@@ -386,10 +434,40 @@ const ProviderSettings = () => {
     }
   };
 
-  const handleAddProvider = () => {
+  const closeAddProviderPicker = () => {
+    setShowAddProviderPicker(false);
+    setPresetSearchQuery("");
+  };
+
+  const handleOpenAddProviderPicker = () => {
+    setShowAddProviderPicker(true);
+  };
+
+  const handleSelectPreset = (preset: ProviderPreset) => {
+    const newId = addProvider();
+    updateProvider(newId, {
+      name: preset.name,
+      type: preset.type,
+      baseUrl: preset.baseUrl,
+      directCall: preset.directCall ?? false,
+    });
+    setSelectedProviderId(newId);
+    closeAddProviderPicker();
+  };
+
+  const handleAddCustomProvider = () => {
     const newId = addProvider();
     setSelectedProviderId(newId);
+    closeAddProviderPicker();
   };
+
+  const filteredPresets = useMemo(() => {
+    const query = normalizeModelSearchQuery(presetSearchQuery);
+    if (!query) return PROVIDER_PRESETS;
+    return PROVIDER_PRESETS.filter((preset) =>
+      normalizeModelSearchQuery(preset.name).includes(query),
+    );
+  }, [presetSearchQuery]);
 
   const toggleModel = (model: string) => {
     if (!currentProvider) return;
@@ -546,7 +624,7 @@ const ProviderSettings = () => {
             <Button
               variant="bare"
               type="button"
-              onClick={handleAddProvider}
+              onClick={handleOpenAddProviderPicker}
               className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium flex items-center gap-1 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
             >
               <Plus size={16} aria-hidden="true" /> {t("add")}
@@ -999,6 +1077,134 @@ const ProviderSettings = () => {
           )}
         </>
       )}
+      {showAddProviderPicker &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-9999 flex items-center justify-center overscroll-contain bg-black/20 backdrop-blur-sm animate-in fade-in duration-200 dark:bg-black/60"
+            style={{
+              paddingTop: "max(1rem, env(safe-area-inset-top))",
+              paddingRight: "max(1rem, env(safe-area-inset-right))",
+              paddingBottom: "max(1rem, env(safe-area-inset-bottom))",
+              paddingLeft: "max(1rem, env(safe-area-inset-left))",
+            }}
+          >
+            <div
+              ref={addProviderDialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={addProviderDialogTitleId}
+              tabIndex={-1}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                  event.preventDefault();
+                  closeAddProviderPicker();
+                  return;
+                }
+                trapModalFocus(event, addProviderDialogRef.current);
+              }}
+              className="flex max-h-[calc(100dvh-2rem)] w-full max-w-md flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl animate-in zoom-in-95 duration-200 dark:border-border dark:bg-card"
+            >
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-border bg-gray-50/50 dark:bg-muted/50">
+                <h3
+                  id={addProviderDialogTitleId}
+                  className="text-sm font-semibold text-gray-800 dark:text-foreground"
+                >
+                  {t("addProviderDialogTitle")}
+                </h3>
+                <Button
+                  variant="bare"
+                  type="button"
+                  aria-label={t("closeAddProviderDialog")}
+                  onClick={closeAddProviderPicker}
+                  className="p-1 hover:bg-gray-200 dark:hover:bg-accent rounded-full transition-colors text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-background"
+                >
+                  <X size={16} aria-hidden="true" />
+                </Button>
+              </div>
+
+              <div className="p-3 border-b border-gray-100 dark:border-border">
+                <div className="relative">
+                  <Search
+                    size={15}
+                    aria-hidden="true"
+                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
+                  <input
+                    ref={presetSearchInputRef}
+                    type="search"
+                    name="provider-preset-search"
+                    autoComplete="off"
+                    spellCheck={false}
+                    value={presetSearchQuery}
+                    onChange={(event) =>
+                      setPresetSearchQuery(event.target.value)
+                    }
+                    placeholder={t("searchProvidersPlaceholder")}
+                    aria-label={t("searchProvidersPlaceholder")}
+                    className="h-9 w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-3 text-sm text-gray-800 outline-none transition-[border-color,box-shadow] placeholder:text-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:border-border dark:bg-muted dark:text-foreground"
+                  />
+                </div>
+              </div>
+
+              <div className="p-3 space-y-1 overflow-y-auto custom-scrollbar">
+                {filteredPresets.map((preset) => {
+                  const PresetIcon = PROVIDER_PRESET_ICONS[preset.id] || Server;
+                  return (
+                    <Button
+                      key={preset.id}
+                      variant="bare"
+                      type="button"
+                      aria-label={t("addProviderAria", { name: preset.name })}
+                      onClick={() => handleSelectPreset(preset)}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left hover:bg-gray-50 dark:hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
+                    >
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+                        <PresetIcon size={16} aria-hidden="true" />
+                      </span>
+                      <span className="flex-1 min-w-0">
+                        <span className="block text-sm font-medium text-gray-800 dark:text-foreground truncate">
+                          {preset.name}
+                        </span>
+                        <span className="block text-xs text-gray-400 font-mono truncate">
+                          {preset.baseUrl}
+                        </span>
+                      </span>
+                      {preset.isLocal && (
+                        <span className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-gray-400 border border-gray-200 dark:border-border rounded px-1.5 py-0.5">
+                          {t("localProviderBadge")}
+                        </span>
+                      )}
+                    </Button>
+                  );
+                })}
+                {filteredPresets.length === 0 && (
+                  <div className="flex flex-col items-center justify-center py-8 text-gray-400">
+                    <AlertCircle
+                      size={24}
+                      className="mb-2 opacity-50"
+                      aria-hidden="true"
+                    />
+                    <span className="text-xs">{t("noProvidersFound")}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-3 border-t border-gray-100 dark:border-border bg-gray-50/50 dark:bg-muted/50">
+                <Button
+                  variant="bare"
+                  type="button"
+                  onClick={handleAddCustomProvider}
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-foreground/85 border border-gray-200 dark:border-border hover:bg-gray-50 dark:hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
+                >
+                  <Settings size={14} aria-hidden="true" />
+                  {t("customProvider")}
+                </Button>
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 };
