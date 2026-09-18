@@ -40,7 +40,9 @@ export async function POST(request: NextRequest) {
     }
 
     const endpoint = getProviderModelsUrl(provider.baseUrl, provider.type);
-    const headers: Record<string, string> = {};
+    const headers: Record<string, string> = {
+      Accept: "application/json",
+    };
     if (isOpenAIProviderType(provider.type)) {
       headers.Authorization = `Bearer ${apiKey}`;
     } else if (isAnthropicProviderType(provider.type)) {
@@ -61,10 +63,23 @@ export async function POST(request: NextRequest) {
     );
 
     if (!response.ok) {
-      return NextResponse.json(
-        { error: `Failed to fetch ${provider.type} models` },
-        { status: response.status },
-      );
+      const upstreamError =
+        typeof data?.error === "string"
+          ? data.error
+          : typeof data?.error?.message === "string"
+            ? data.error.message
+            : typeof data?.message === "string"
+              ? data.message
+              : typeof data?.detail === "string"
+                ? data.detail
+                : undefined;
+
+      const providerLabel = provider.name || provider.type;
+      const error = upstreamError
+        ? `${providerLabel}: ${upstreamError}`
+        : `Failed to fetch ${provider.type} models (HTTP ${response.status})`;
+
+      return NextResponse.json({ error }, { status: response.status });
     }
 
     const models = extractProviderModelIds(provider.type, data);

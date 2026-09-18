@@ -603,4 +603,84 @@ describe("BYOK route integration", () => {
     expect(mocks.decryptSecretEnvelope).not.toHaveBeenCalled();
     expect(mocks.safeFetchJson).not.toHaveBeenCalled();
   });
+
+  it("fetches provider models and includes Accept header", async () => {
+    mocks.resolveProviderRuntimeConfig.mockResolvedValue({
+      type: "OpenAI Compatible",
+      name: "Mistral AI",
+      baseUrl: "https://api.mistral.ai/v1",
+      apiKey: "mistral-key",
+    });
+    mocks.safeFetchJson.mockResolvedValue({
+      response: new Response(null, { status: 200 }),
+      data: {
+        data: [{ id: "mistral-large-latest" }, { id: "mistral-small-latest" }],
+      },
+    });
+
+    const { POST } = await import("../app/api/providers/models/route");
+    const response = await POST(
+      new Request("https://neo.test/api/providers/models", {
+        method: "POST",
+        body: JSON.stringify({
+          provider: {
+            type: "OpenAI Compatible",
+            name: "Mistral AI",
+            baseUrl: "https://api.mistral.ai/v1",
+            apiKeySecret,
+          },
+        }),
+      }) as any,
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({
+      models: ["mistral-large-latest", "mistral-small-latest"],
+    });
+    expect(mocks.safeFetchJson).toHaveBeenCalledWith(
+      "https://api.mistral.ai/v1/models",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Accept: "application/json",
+          Authorization: "Bearer mistral-key",
+        }),
+      }),
+      expect.any(Object),
+    );
+  });
+
+  it("propagates detailed upstream provider error when models fetch fails", async () => {
+    mocks.resolveProviderRuntimeConfig.mockResolvedValue({
+      type: "OpenAI Compatible",
+      name: "Mistral AI",
+      baseUrl: "https://api.mistral.ai/v1",
+      apiKey: "invalid-key",
+    });
+    mocks.safeFetchJson.mockResolvedValue({
+      response: new Response(null, { status: 401 }),
+      data: {
+        message: "Unauthorized: Invalid API key",
+      },
+    });
+
+    const { POST } = await import("../app/api/providers/models/route");
+    const response = await POST(
+      new Request("https://neo.test/api/providers/models", {
+        method: "POST",
+        body: JSON.stringify({
+          provider: {
+            type: "OpenAI Compatible",
+            name: "Mistral AI",
+            baseUrl: "https://api.mistral.ai/v1",
+            apiKeySecret,
+          },
+        }),
+      }) as any,
+    );
+
+    expect(response.status).toBe(401);
+    expect(await response.json()).toEqual({
+      error: "Mistral AI: Unauthorized: Invalid API key",
+    });
+  });
 });

@@ -234,15 +234,36 @@ export async function fetchDirectProviderModels(
 
   const response = await fetch(endpoint, {
     method: "GET",
-    headers: getDirectProviderAuthHeaders(
-      directProvider,
-      directProvider.apiKey,
-    ),
+    headers: {
+      Accept: "application/json",
+      ...getDirectProviderAuthHeaders(directProvider, directProvider.apiKey),
+    },
     signal,
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch ${provider.type} models`);
+    let detail: string | undefined;
+    try {
+      const errorData = await response.json();
+      detail =
+        typeof errorData?.error === "string"
+          ? errorData.error
+          : typeof errorData?.error?.message === "string"
+            ? errorData.error.message
+            : typeof errorData?.message === "string"
+              ? errorData.message
+              : typeof errorData?.detail === "string"
+                ? errorData.detail
+                : undefined;
+    } catch {
+      // Ignore JSON parse error
+    }
+    const label = provider.name || provider.type;
+    throw new Error(
+      detail
+        ? `${label}: ${detail}`
+        : `Failed to fetch ${provider.type} models (HTTP ${response.status})`,
+    );
   }
 
   return extractProviderModelIds(provider.type, await response.json());
