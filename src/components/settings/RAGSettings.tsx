@@ -22,6 +22,11 @@ import {
   encryptLocalSecret,
   LOCAL_SECRET_CONTEXTS,
 } from "@/lib/security/localSecrets";
+import {
+  resolveLlamaParseApiKey,
+  resolveMineruApiToken,
+  resolveRagToken,
+} from "@/lib/security/localSecretResolvers";
 
 const LLAMA_PARSE_KEY_URL = "https://cloud.llamaindex.ai/";
 const MINERU_KEY_URL = "https://mineru.net/apiManage";
@@ -155,6 +160,7 @@ const RAGSettings = () => {
                     hasSecret={Boolean(
                       rag.mineruApiToken || rag.mineruApiTokenSecret,
                     )}
+                    onReveal={() => resolveMineruApiToken(rag)}
                     onSave={async (value) =>
                       updateRAGConfig({
                         mineruApiToken: "",
@@ -205,6 +211,7 @@ const RAGSettings = () => {
                       hasSecret={Boolean(
                         rag.llamaParseApiKey || rag.llamaParseApiKeySecret,
                       )}
+                      onReveal={() => resolveLlamaParseApiKey(rag)}
                       onSave={async (value) =>
                         updateRAGConfig({
                           llamaParseApiKey: "",
@@ -359,6 +366,7 @@ const RAGSettings = () => {
                       maxLength={RAG_LIMITS.maxTokenChars}
                       placeholder={t("tokenPlaceholder")}
                       hasSecret={Boolean(rag.token || rag.tokenSecret)}
+                      onReveal={() => resolveRagToken(rag)}
                       onSave={async (value) =>
                         updateRAGConfig({
                           token: "",

@@ -29,6 +29,10 @@ import {
   LOCAL_SECRET_CONTEXTS,
 } from "@/lib/security/localSecrets";
 import {
+  resolveElevenLabsApiKey,
+  resolveMimoApiKey,
+} from "@/lib/security/localSecretResolvers";
+import {
   resolveProviderModelMetadata,
   supportsModality,
 } from "@/lib/utils/model";
@@ -264,6 +268,7 @@ const VoiceSettings = () => {
             hasSecret={Boolean(
               voice.elevenLabsApiKey || voice.elevenLabsApiKeySecret,
             )}
+            onReveal={() => resolveElevenLabsApiKey(voice)}
             onSave={async (value) =>
               updateVoiceSettings({
                 elevenLabsApiKey: "",
@@ -306,6 +311,7 @@ const VoiceSettings = () => {
             name="mimoApiKey"
             placeholder={t("mimoKeyPlaceholder")}
             hasSecret={Boolean(voice.mimoApiKey || voice.mimoApiKeySecret)}
+            onReveal={() => resolveMimoApiKey(voice)}
             onSave={async (value) =>
               updateVoiceSettings({
                 mimoApiKey: "",

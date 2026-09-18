@@ -13,6 +13,7 @@ import {
   LOCAL_SECRET_CONTEXTS,
   type LocalEncryptedSecretEnvelope,
 } from "@/lib/security/localSecrets";
+import { resolveSearchApiKey } from "@/lib/security/localSecretResolvers";
 import { SecretInput } from "@/components/ui/controls";
 import { Button } from "@/components/ui/primitives";
 
@@ -171,6 +172,7 @@ export const SearchProviderItem = ({
                   maxLength={apiKeyMaxLength}
                   placeholder={t("enterApiKey")}
                   hasSecret={Boolean(config?.apiKey || config?.apiKeySecret)}
+                  onReveal={() => resolveSearchApiKey(id, config)}
                   onSave={async (value) =>
                     onUpdateConfig?.({
                       apiKey: "",

@@ -68,6 +68,7 @@ import {
   encryptLocalSecret,
   LOCAL_SECRET_CONTEXTS,
 } from "@/lib/security/localSecrets";
+import { resolveProviderApiKey } from "@/lib/security/localSecretResolvers";
 import {
   resolveProviderModelMetadata,
   supportsImageGeneration,
@@ -789,6 +790,7 @@ const ProviderSettings = () => {
                       hasSecret={Boolean(
                         currentProvider.apiKey || currentProvider.apiKeySecret,
                       )}
+                      onReveal={() => resolveProviderApiKey(currentProvider)}
                       onSave={async (value) =>
                         updateProvider(currentProvider.id, {
                           apiKey: "",

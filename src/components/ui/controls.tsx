@@ -7,7 +7,7 @@ import React, {
   useId,
   useMemo,
 } from "react";
-import { ChevronDown, Check, Save, Trash2 } from "lucide-react";
+import { ChevronDown, Check, Save, Trash2, Eye, EyeOff } from "lucide-react";
 import { useTranslations } from "next-intl";
 import AnchoredPortal from "@/components/ui/AnchoredPortal";
 import { Button } from "@/components/ui/primitives";
@@ -466,6 +466,7 @@ export const SecretInput = ({
   hasSecret,
   onSave,
   onClear,
+  onReveal,
   inputClassName = "",
 }: {
   id: string;
@@ -475,12 +476,38 @@ export const SecretInput = ({
   hasSecret: boolean;
   onSave: (value: string) => Promise<void> | void;
   onClear?: () => Promise<void> | void;
+  onReveal?: () => Promise<string | undefined> | string | undefined;
   inputClassName?: string;
 }) => {
   const t = useTranslations("Common");
   const [value, setValue] = useState("");
+  const [showSecret, setShowSecret] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isRevealing, setIsRevealing] = useState(false);
   const trimmed = value.trim();
+
+  const handleToggleShow = async () => {
+    if (showSecret) {
+      setShowSecret(false);
+      return;
+    }
+
+    if (!value && hasSecret && onReveal) {
+      setIsRevealing(true);
+      try {
+        const revealed = await onReveal();
+        if (revealed) {
+          setValue(revealed);
+          setShowSecret(true);
+        }
+      } finally {
+        setIsRevealing(false);
+      }
+      return;
+    }
+
+    setShowSecret(true);
+  };
 
   const handleSave = async () => {
     if (!trimmed || isSaving) return;
@@ -489,6 +516,7 @@ export const SecretInput = ({
     try {
       await onSave(trimmed);
       setValue("");
+      setShowSecret(false);
     } finally {
       setIsSaving(false);
     }
@@ -501,10 +529,13 @@ export const SecretInput = ({
     try {
       await onClear();
       setValue("");
+      setShowSecret(false);
     } finally {
       setIsSaving(false);
     }
   };
+
+  const canToggleShow = hasSecret || Boolean(value) || Boolean(onReveal);
 
   return (
     <div className="space-y-1.5">
@@ -512,7 +543,7 @@ export const SecretInput = ({
         <input
           id={id}
           name={name}
-          type="password"
+          type={showSecret ? "text" : "password"}
           value={value}
           onChange={(event) => setValue(event.target.value)}
           maxLength={maxLength}
@@ -524,11 +555,27 @@ export const SecretInput = ({
             "min-w-0 flex-1 px-3 py-2 bg-gray-50 dark:bg-muted border border-gray-200 dark:border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-[background-color,border-color,box-shadow,color] font-mono text-gray-800 dark:text-foreground"
           }
         />
+        {canToggleShow ? (
+          <Button
+            variant="bare"
+            type="button"
+            aria-label={showSecret ? t("hideSecret") : t("showSecret")}
+            disabled={isSaving || isRevealing}
+            onClick={handleToggleShow}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gray-200 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 disabled:cursor-not-allowed disabled:opacity-50 dark:border-border dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-foreground"
+          >
+            {showSecret ? (
+              <EyeOff size={15} aria-hidden="true" />
+            ) : (
+              <Eye size={15} aria-hidden="true" />
+            )}
+          </Button>
+        ) : null}
         <Button
           variant="bare"
           type="button"
           aria-label={t("saveSecret")}
-          disabled={!trimmed || isSaving}
+          disabled={!trimmed || isSaving || isRevealing}
           onClick={handleSave}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-500 text-white transition-colors hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 disabled:cursor-not-allowed disabled:opacity-50"
         >
@@ -539,7 +586,7 @@ export const SecretInput = ({
             variant="bare"
             type="button"
             aria-label={t("clearSecret")}
-            disabled={isSaving}
+            disabled={isSaving || isRevealing}
             onClick={handleClear}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gray-200 text-gray-500 transition-colors hover:bg-gray-100 hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 disabled:cursor-not-allowed disabled:opacity-50 dark:border-border dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-red-300"
           >
